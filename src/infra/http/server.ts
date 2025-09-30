@@ -1,3 +1,4 @@
+import { env } from '@/env'
 import { uploadImageRoute } from '@/infra/http/routes/upload-image'
 import { fastifyCors } from '@fastify/cors'
 import { fastifyMultipart } from '@fastify/multipart'
@@ -10,7 +11,6 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod'
-import { env } from '../env'
 
 const server = fastify()
 
