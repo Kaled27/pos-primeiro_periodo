@@ -4,6 +4,7 @@ import { schema } from '@/infra/db/schemas'
 import { type Either, makeLeft, makeRight } from '@/shared/either'
 import z from 'zod'
 import { InvalidFileFormat } from './errors/invalide-file-format'
+import { uploadFileToStorage } from '@/infra/storage/upload-file-to-storage'
 
 const uploadImageInput = z.object({
   fileName: z.string(),
@@ -24,8 +25,20 @@ export async function uploadImage(
     return makeLeft(new InvalidFileFormat())
   }
 
+  const { key, url } = await uploadFileToStorage({
+    folder: 'images',
+    fileName: fileName,
+    contentType: contentType,
+    contentSteam: contentSteam,
+  })
+
   await db
     .insert(schema.uploads)
-    .values({ name: fileName, remoteKey: fileName, remoteUrl: fileName })
-  return makeRight({ url: '' })
+    .values({ 
+      name: fileName, 
+      remoteKey: key, 
+      remoteUrl: url,
+    })
+
+  return makeRight({ url })
 }
