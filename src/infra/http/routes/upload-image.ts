@@ -1,10 +1,7 @@
 import { uploadImage } from '@/app/functions/upload-image'
-import { db } from '@/infra/db'
-import { schema } from '@/infra/db/schemas'
-import { isLeft, isRight, unwrapEither } from '@/shared/either'
+import { isRight, unwrapEither } from '@/shared/either'
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { file } from 'zod/v4'
 
 export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
   server.post(
@@ -29,7 +26,10 @@ export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
     },
     async (request, reply) => {
       const uploadedFile = await request.file({
-        limits: { fileSize: 1024 * 1024 * 2 }, // 2MB
+        limits: { 
+          fileSize: 1024 * 1024 * 2 
+        }, // 2MB
+
       })
 
       if (!uploadedFile) {
@@ -41,6 +41,12 @@ export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
         contentType: uploadedFile.mimetype,
         contentSteam: uploadedFile.file,
       })
+
+      if (uploadedFile.file.truncated) {
+        return reply.status(400).send({ 
+          message: 'File size limit reached',
+        })
+      }
 
       if (isRight(result)) {
         console.log(unwrapEither(result))
