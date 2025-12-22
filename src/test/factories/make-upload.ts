@@ -11,8 +11,8 @@ export async function makeUpload(
     
     const result = await db.insert(schema.uploads).values({
         name: fileName,
-        remoteKey: `http://example.com/images/${fileName}`,
-        remoteUrl: faker.internet.url(),
+        remoteKey: `images/${fileName}`,
+        remoteUrl: `http://example.com/images/${fileName}`,
         ...overrides,
     }).returning();
 
