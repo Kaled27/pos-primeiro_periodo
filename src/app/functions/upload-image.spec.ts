@@ -28,7 +28,7 @@ describe('upload image', () => {
     const sut = await uploadImage({
       fileName,
       contentType: 'image/jpeg',
-      contentSteam: Readable.from([]),
+      contentStream: Readable.from([]),
     })
     expect(isRight(sut)).toBe(true)
 
@@ -46,7 +46,7 @@ describe('upload image', () => {
     const sut = await uploadImage({
       fileName,
       contentType: 'document/pdf',
-      contentSteam: Readable.from([]),
+      contentStream: Readable.from([]),
     })
     expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(InvalidFileFormat)
