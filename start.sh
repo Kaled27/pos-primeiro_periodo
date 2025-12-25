@@ -1,4 +1,5 @@
 #!/bin/sh
+npm run db:migrate
 
 # Executar db:studio em background com host 0.0.0.0 para aceitar conexões externas
 npx drizzle-kit studio --host=0.0.0.0 --port=4983 &
