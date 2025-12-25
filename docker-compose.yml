@@ -21,6 +21,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3333:3333"
+      - "4983:4983"
     environment:
       - NODE_ENV=production
       - PORT=3333
