@@ -41,5 +41,13 @@ jobs:
           node-version: 20
           cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run test
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create .env.test file
+        run: |
+          echo "NODE_ENV=test" >> .env.test
+          echo "DATABASE_URL=postgresql://docker:docker@localhost:5432/upload_test" >> .env.test
+
+      - name: Run tests
+        run: pnpm run test
