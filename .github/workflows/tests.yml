@@ -29,20 +29,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9
-          run_install: false
-
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "pnpm"
+          cache: "npm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Create .env.test file
         run: |
@@ -50,4 +44,4 @@ jobs:
           echo "DATABASE_URL=postgresql://docker:docker@localhost:5432/upload_test" >> .env.test
 
       - name: Run tests
-        run: pnpm run test
+        run: npm run test
