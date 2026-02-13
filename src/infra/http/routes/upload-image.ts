@@ -15,7 +15,7 @@ export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
         //   file: z.instanceof(File).describe('Image file to upload'),
         // }),
         response: {
-          201: z.object({ uploadId: z.string() }),
+          201: z.object({ remoteUrl: z.string() }),
           400: z
             .object({ message: z.string() })
             .describe('Validation error or file is missing.'),
@@ -50,7 +50,7 @@ export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
 
       if (isRight(result)) {
         console.log(unwrapEither(result))
-        return reply.status(201).send({ uploadId: result.right.url })
+        return reply.status(201).send({ remoteUrl: result.right.url })
       }
 
       const error = unwrapEither(result)
